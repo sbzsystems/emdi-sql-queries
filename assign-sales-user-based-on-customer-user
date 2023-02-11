@@ -1,6 +1,3 @@
-
-
-
 update "pvlhseis" set "pvlhseis"."Xrhsths"=
 (select "pelates"."Xrhsths" from "pelates"  where "pelates"."Aa"="pvlhseis"."Kvdikospelath")
 
