@@ -1,0 +1,184 @@
+-- COPY DOCUMENT
+EXECUTE BLOCK AS
+declare newdocid int = 99;
+declare fromtitle varchar(1000) = '';   -- related document suffix
+declare multiplier smallint = 1;        -- 1 sales  -1 purchases
+BEGIN
+ 
+-------------------------------------------------
+-------------------------------------------------
+ 
+    -- change newdocid based on customer code
+    if ((select "pelates"."Kvdikos" from "pelates" where "pelates"."Aa"=:cl)='customer code') then newdocid=1;
+ 
+ 
+    if ((select count("pvlhseis"."Aa") from "pvlhseis" where "pvlhseis"."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle))>0) then begin
+                          
+                                                        
+        -- UPDATE STOCK                                                                
+        update "apouhkh" set "apouhkh"."Diauesimothta"="apouhkh"."Diauesimothta"+ 
+        :multiplier*(select sum(grm."Posothta")
+        from "pvlhseis" pvm,"grammes" grm                                                                  
+                                                                                                 
+        where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+        and grm."Aapar"=pvm."Aa"
+        and "apouhkh"."Aa"=grm."Eidos")
+ 
+        where "apouhkh"."Aa" in
+        (select grm."Eidos" from "pvlhseis" pvm,"grammes" grm                                         
+        where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+        and grm."Aapar"=pvm."Aa")     
+        ;     
+        
+        
+        -- DELETE OLD DOCUMENT LINES
+        delete from "grammes" 
+        where "grammes"."Aapar"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+        ;
+        
+    
+        -- CREATE NEW DOCUMENT LINES
+        insert into "grammes" ("grammes"."Aa","grammes"."Aapar","grammes"."Eidos","grammes"."KvdikosEidoys",
+        "grammes"."PerigrafhEidoys","grammes"."fpa_","grammes"."Posothta","grammes"."Monada","grammes"."monada_",
+        "grammes"."Timh","grammes"."Ekptvsh","grammes"."order"
+        )
+ 
+        select
+        (select gen_id("gen_grammes_id", 1) as fname from RDB$DATABASE), 
+        (select pvl1."Aa" from "pvlhseis" pvl1 where pvl1."Sxetika" like '%&'||:aa||:fromtitle),
+        "apouhkh"."Aa","apouhkh"."Kvdikos",
+		(case when "apouhkh"."Aa" is null then graa."PerigrafhEidoys" else "apouhkh"."Perigrafh" end),
+		graa."fpa_",
+        graa."Posothta",
+        graa."Monada",graa."monada_",graa."Timh",graa."Ekptvsh",graa."order"
+ 
+                                                                                                  
+        from "pvlhseis" pvll,"grammes" graa
+		left join "apouhkh" on "apouhkh"."Aa"= graa."Eidos"
+        where pvll."Aa"=graa."Aapar"
+        and pvll."Aa"=:aa
+        -- and trim("apouhkh"."custom2")=:fromtitle
+    
+        ; 
+                        
+        
+    end else begin
+ 
+      
+ 
+        -- CREATE NEW DOCUMENT
+        insert into "pvlhseis" ("pvlhseis"."modified","pvlhseis"."Aa", "pvlhseis"."Ariumospar",
+        "pvlhseis"."Hmeromhnia","pvlhseis"."Parastatiko","pvlhseis"."Sxetika")
+        values ('Now',
+        (select gen_id("gen_pvlhseis_id", 1) as fname from RDB$DATABASE),
+        (select eid1."Ariumos" from "eidhpar" eid1 where eid1."Aa"=:newdocid),
+        'NOW',
+        :newdocid,
+        (select substring(eid2."Parastatiko" from 1 for 3)||' '||pvl2."Seira"||'#'||pvl2."Ariumospar" from "pvlhseis" pvl2
+        left join "eidhpar" eid2 on eid2."Aa"=pvl2."Parastatiko"
+        where pvl2."Aa"=:aa)||' &'||:aa||:fromtitle
+        )    
+        ;
+             
+        -- INCREMENT NUMBER TO DOCUMENT TYPE
+        update "eidhpar" set "eidhpar"."Ariumos"="eidhpar"."Ariumos"+1 where "eidhpar"."Aa"= :newdocid
+        ;
+                                                          
+        -- CREATE NEW DOCUMENT LINES
+        insert into "grammes" ("grammes"."Aa","grammes"."Aapar","grammes"."Eidos","grammes"."KvdikosEidoys",
+        "grammes"."PerigrafhEidoys","grammes"."fpa_","grammes"."Posothta","grammes"."Monada","grammes"."monada_",
+        "grammes"."Timh","grammes"."Ekptvsh","grammes"."order"
+        )
+ 
+        select
+        (select gen_id("gen_grammes_id", 1) as fname from RDB$DATABASE), 
+        (select pvl1."Aa" from "pvlhseis" pvl1 where pvl1."Sxetika" like '%&'||:aa||:fromtitle),
+        "apouhkh"."Aa","apouhkh"."Kvdikos",
+		(case when "apouhkh"."Aa" is null then graa."PerigrafhEidoys" else "apouhkh"."Perigrafh" end),
+		graa."fpa_",
+        graa."Posothta",
+        graa."Monada",graa."monada_",graa."Timh",graa."Ekptvsh",graa."order"
+                                                                                      
+ 
+        from "pvlhseis" pvll,"grammes" graa
+		left join "apouhkh" on "apouhkh"."Aa"= graa."Eidos"
+        where pvll."Aa"=graa."Aapar"
+        and pvll."Aa"=:aa
+        -- and trim("apouhkh"."custom2")=:fromtitle
+        ;              
+     
+ 
+       
+        
+    end
+ 
+                                       
+                                       
+                                       
+ -- UPDATE STOCK
+        update "apouhkh" set "apouhkh"."Diauesimothta"="apouhkh"."Diauesimothta"-
+        :multiplier*(select sum(grm."Posothta")
+        from "pvlhseis" pvm,"grammes" grm
+ 
+        where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+        and grm."Aapar"=pvm."Aa"
+        and "apouhkh"."Aa"=grm."Eidos")
+ 
+        where "apouhkh"."Aa" in
+        (select grm."Eidos" from "pvlhseis" pvm,"grammes" grm
+        where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+        and grm."Aapar"=pvm."Aa")                                                                                
+        ;                                            
+ 
+     
+ 
+-- UPDATE related document
+update "pvlhseis" pvm set
+ 
+pvm."modified"='Now',
+pvm."Sxetiko"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+ 
+where pvm."Aa"=:aa
+ 
+;
+ 
+-- UPDATE NEW DOCUMENT ADDING TOTALS
+update "pvlhseis" pvm set
+ 
+pvm."modified"='Now',
+pvm."synolofpa_"=(select pvm2."synolofpa_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."synolonpe_"=(select pvm2."synolonpe_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."synolo_"=(select pvm2."synolo_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."synoloposothtas_"=(select pvm2."synoloposothtas_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."ogkos_syn"=(select pvm2."ogkos_syn" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."embado_syn"=(select pvm2."embado_syn" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."baros_syn"=(select pvm2."baros_syn" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."ajia_syn"=(select pvm2."ajia_syn" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."synolikopososto"=(select pvm2."synolikopososto" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."loipes_"=(select pvm2."loipes_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Plhrvmh"=(select pvm2."Plhrvmh" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Hmeromhnia"=(select pvm2."Hmeromhnia" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Sxolio"=(select pvm2."Sxolio" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Tropos"=(select pvm2."Tropos" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Skopos"=(select pvm2."Skopos" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Kvdikospelath"=(select pvm2."Kvdikospelath" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),  -- customer id
+pvm."Paradosh"=(select pvm2."Paradosh" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."assignor"=(select pvm2."assignor" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Apostolh"=(select pvm2."Apostolh" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."custom1"=(select pvm2."custom1" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."custom2"=(select pvm2."custom2" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."Fortvsh"=(select pvm2."Fortvsh" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
+pvm."voucher"=(select pvm2."voucher" from "pvlhseis" pvm2 where pvm2."Aa"=:aa)
+-- ,pvm."Parastatiko"=:newdocid
+ 
+where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
+ 
+ 
+ 
+;
+ 
+  
+ 
+ 
+ 
+END;
