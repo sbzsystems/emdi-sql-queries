@@ -172,9 +172,9 @@ pvm."voucher"=(select pvm2."voucher" from "pvlhseis" pvm2 where pvm2."Aa"=:aa)
 -- ,pvm."Parastatiko"=:newdocid
  
 where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&'||:aa||:fromtitle)
- 
- 
- 
+
+
+
 ;
 
 
