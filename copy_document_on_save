@@ -179,6 +179,6 @@ where pvm."Aa"=(select pvl."Aa" from "pvlhseis" pvl where pvl."Sxetika" like '%&
  
   
  
- 
+
 
 END;
