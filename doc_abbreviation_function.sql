@@ -1,3 +1,15 @@
+/*
+Here's an explanation of the function:
+
+    The function takes two input parameters:
+        DOCTITLE: A string representing the title of the document.
+        DOCNUMBER: A string representing the document number.
+        
+For example, if the function is called with the following parameters:
+
+SELECT DOC_ABBREVIATION('Example Document Title', '123') FROM RDB$DATABASE;
+*/
+
 create or alter function DOC_ABBREVIATION (
     DOCTITLE varchar(1000),
     DOCNUMBER varchar(1000))
