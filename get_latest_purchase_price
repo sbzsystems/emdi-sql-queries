@@ -1,3 +1,15 @@
+/*
+Here's a quick explanation of the input parameters and the function's behavior:
+
+    1. product_id: The ID of the product you want to fetch the latest purchase price for.
+    2. after_discount: A boolean flag indicating whether the price should be returned after applying the discount (true) or the original price without the discount (false).
+    3. customer_id: The ID of the customer you want to filter the results by. If this parameter is null, the function will not filter by customer.
+    
+    Example:
+    SELECT GET_LATEST_PURCHASE_PRICE(8594, true, 123) FROM RDB$DATABASE;    
+*/
+
+
 CREATE or alter FUNCTION GET_LATEST_PURCHASE_PRICE (product_id INTEGER,after_discount boolean,customer_id integer)
 RETURNS DOUBLE PRECISION
 AS
