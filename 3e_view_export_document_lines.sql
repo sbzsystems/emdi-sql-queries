@@ -32,7 +32,7 @@ select
 
 "pvlhseis"."Aa" DocumentID,
 "grammes"."Aa" LineID,
-"grammes"."Aa" LineNumber,
+ROW_NUMBER() OVER (PARTITION BY "Aapar" ORDER BY "Aapar") AS LineNumber,
 null SupplierAfm,
 "grammes"."Eidos" ProductID,
 "grammes"."PerigrafhEidoys" prod_description,
@@ -78,6 +78,4 @@ and ((eid."Xrevstiko" in (1,6) and eid."Emf_timvn"=1)
 or (eid."Xrevstiko" in (0,5) and eid."Emf_timvn"=2))
 
 and exists (select first 1 apoi."Aa" from "apouhkh" apoi where apoi."Aa"="grammes"."Eidos" and apoi."custom1"='3E')
---and "pvlhseis"."Parastatiko"=6
---and    ("pvlhseis"."Hmeromhnia" >= '4/1/2022 00:00:00' and "pvlhseis"."Hmeromhnia" <= '4/30/2022 23:59:59')
 ;
