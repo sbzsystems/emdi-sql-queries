@@ -4,12 +4,12 @@ Purpose:
 The function qty_docs_based calculates the sum of quantities for a specified product, considering certain types of documents that add to and subtract from the quantity.
 
 Parameters:
-    product_aa (INTEGER): The identifier of the product whose quantity needs to be calculated.
-    add_docs (VARCHAR(1000)): A comma-separated list of document types that should add to the quantity.
-    subtract_docs (VARCHAR(1000)): A comma-separated list of document types that should subtract from the quantity.
+product_aa (INTEGER): The identifier of the product whose quantity needs to be calculated.
+add_docs (VARCHAR(1000)): A comma-separated list of document types that should add to the quantity.
+subtract_docs (VARCHAR(1000)): A comma-separated list of document types that should subtract from the quantity.
 
 Returns:
-    FLOAT: The calculated quantity of the specified product based on the provided document types.
+FLOAT: The calculated quantity of the specified product based on the provided document types.
 
 Usage:
 To use the function, you need to provide the product identifier and the document types that add to and subtract from the quantity.
