@@ -1,7 +1,39 @@
+/*
+This SQL performs the duplication of sales documents (pvlhseis) and associated lines (grammes) and movements (kinhseis). The script ensures the new documents and their lines are correctly created and updated, with the necessary changes in stock availability.
+Variables
+
+    newdocid and newdocid2: Integers representing new document IDs.
+    fromtitle: A string used as a suffix for related document references.
+    loy and loytwo: Codes representing products.
+    multiplier: Determines if the document is for sales (1) or purchases (-1).
+    paym: New payment ID.
+    created_doc_id: Stores the ID of the created document.
+
+Process Outline
+
+    Updating Document Details from Packing List
+        The script updates custom fields in the pvlhseis table based on associated eidhpar records and specific date formats.
+
+    Stock Update and Old Document Line Deletion
+        If a related document exists, the script updates stock levels, deletes old document lines from grammes and kinhseis tables, and inserts new document lines.
+
+    Creating a New Document
+        If no related document exists, a new document is created in the pvlhseis table, and a new document line is added to the grammes and kinhseis tables.
+
+    Updating Stock Levels
+        Adjusts stock availability based on the new document lines.
+
+    Updating Related Document Fields
+        Synchronizes various fields of the new document with the original document to ensure consistency.
+
+    Handling a Second Document (newdocid2)
+        Similar logic is applied to handle a second document type, ensuring all associated lines and stock updates are processed accordingly.
+*/
+
+
+
 -- doc -- 
 
-
-     
 -- COPY DOCUMENT     se confirmation
 EXECUTE BLOCK AS
 declare newdocid int = 125;
@@ -13,21 +45,8 @@ declare multiplier smallint = 1;        -- 1 sales  -1 purchases
 declare paym int = 1; -- new payment id
 declare created_doc_id int; -- new payment id
 
-
-
 BEGIN
-
-
-
-
-
-
-
-
 --STOIXEIA APO PACKING LIST   
-
-   
-
 
 UPDATE "pvlhseis"
 SET "pvlhseis"."custom2" = (
@@ -40,9 +59,7 @@ SET "pvlhseis"."custom2" = (
   AND sss."Sxetiko" = :aa
 )
 WHERE "Aa" = :aa;
-
-
-                                         
+                    
 -------------------------------------------------
 -------------------------------------------------
  
@@ -78,8 +95,6 @@ WHERE "Aa" = :aa;
         delete from "kinhseis" 
         where "kinhseis"."aapar"=:created_doc_id
         ;
-        
-        
     
         --CREATE NEW DOCUMENT LINE INCLUDED ONE PRODUCT WITH ID 'LOY'
             insert into "grammes" ("grammes"."Aa","grammes"."Aapar","grammes"."Eidos","grammes"."KvdikosEidoys",
@@ -124,15 +139,10 @@ WHERE "Aa" = :aa;
                                   
             ; 
             
-            
-            
-            
-                        
-        
+
     end else begin
  
-      
- 
+     
         -- CREATE NEW DOCUMENT
         insert into "pvlhseis" ("pvlhseis"."modified","pvlhseis"."Aa", "pvlhseis"."Ariumospar",
         "pvlhseis"."Hmeromhnia","pvlhseis"."Parastatiko","pvlhseis"."Sxetika")
@@ -202,9 +212,7 @@ WHERE "Aa" = :aa;
         
     end
  
-                                       
-                                       
-                                       
+                                
  -- UPDATE STOCK
         update "apouhkh" set "apouhkh"."Diauesimothta"="apouhkh"."Diauesimothta"-
         :multiplier*(select sum(grm."Posothta")
@@ -249,10 +257,7 @@ where pvm."Aa"=:aa
     --    pvm."synolonpe_"=(select pvm2."synolonpe_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
     --    pvm."synolo_"=(select pvm2."synolo_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
     --    pvm."synoloposothtas_"=(select pvm2."synoloposothtas_" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
-        
 
-        
-         
         
         pvm."Kvdikospelath"=(select pvm2."Kvdikospelath" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),  -- customer id
         pvm."Paradosh"=(select pvm2."Paradosh" from "pvlhseis" pvm2 where pvm2."Aa"=:aa),
@@ -292,11 +297,6 @@ WHERE pvm2."Aa" = :aa
         
         ;
  
-  
- 
- 
-
-
 
 -- COPY DOCUMENT 2
 
@@ -504,19 +504,9 @@ pvm."Pinakida"=(select pvm2."Pinakida" from "pvlhseis" pvm2 where pvm2."Aa"=:aa)
 -- ,pvm."Parastatiko"=:newdocid2
  
 where pvm."Aa"=:created_doc_id
- 
- 
- 
+
 ;
  
-  
- 
-
-
-
-
-
-
 END;
  
 -- doc-eof --   
