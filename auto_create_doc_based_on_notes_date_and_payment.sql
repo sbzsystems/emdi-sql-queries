@@ -1,3 +1,29 @@
+/*
+Overview and Steps
+
+    Initialization:
+        Define dd as the new document id.
+        Define loy as the product code for receiving money.
+        Define cpaym as the current payment id.
+
+    Condition Checks:
+        Check if the customer ID is not zero and the payment method is not credit.
+        Ensure that the query's conditions return expected results.
+
+    Updating or Inserting Document Lines:
+        If a related sale exists, update the document line.
+        If no related sale exists, create a new document and document line.
+
+    Updating Totals for the New Document:
+        Calculate and update totals for the document based on the inserted or updated lines.
+
+    Updating Current Payment:
+        Change the current payment method.
+*/
+
+
+
+
 EXECUTE BLOCK AS
 declare dd int = 58; -- new document id    
 declare loy varchar(10) = 'ΕΙΣ'; -- code of product for receive money
