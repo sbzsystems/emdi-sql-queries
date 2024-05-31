@@ -1,0 +1,26 @@
+CREATE OR ALTER FUNCTION qty_docs_based (
+    product_aa INTEGER,
+    add_docs VARCHAR(1000),
+    subtract_docs VARCHAR(1000)
+)
+RETURNS FLOAT
+AS
+DECLARE VARIABLE tmpqty FLOAT;
+BEGIN
+    execute statement '
+    SELECT
+        SUM(CASE WHEN "pvlhseis"."Parastatiko" IN (' || :add_docs || ') THEN 1 ELSE -1 END * "grammes"."Posothta")
+    FROM 
+        "grammes", "pvlhseis", "eidhpar"
+    WHERE 
+        "pvlhseis"."Parastatiko" IN (' || :add_docs || ',' || :subtract_docs || ')
+        AND "grammes"."Aapar" = "pvlhseis"."Aa"
+        AND "pvlhseis"."Parastatiko" = "eidhpar"."Aa"
+        AND "grammes"."Eidos" = ' || :product_aa || '
+        AND ("grammes"."KvdikosEidoys" <> '''')
+        AND ("grammes"."KvdikosEidoys" IS NOT NULL)'
+    INTO :tmpqty;
+    
+    if (tmpqty is null) then tmpqty=0;
+    RETURN tmpqty;
+END
