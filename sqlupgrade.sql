@@ -5,26 +5,20 @@
 -----------------------
 
 ALTER CHARACTER SET UTF8 SET DEFAULT COLLATION UTF8;
-     
-
 ALTER TABLE "dikaivmata" ADD "limit_docs" VARCHAR(50);
 	 
-
 drop collation natural_order;
 create collation natural_order for utf8 from unicode 'NUMERIC-SORT=1';
 
 ALTER TABLE "relatedproducts" ADD "totalsaleprice" DP;
 ALTER TABLE "relatedproducts" ADD "totalpurchaseprice" DP;
 
-
 CREATE INDEX PELATES_IDX105 ON "pelates" COMPUTED BY ("pelates"."Epiueto"||"pelates"."Onoma"||"pelates"."Epvnymia");
-
 
 CREATE INDEX RANTEVOU_IDX13 ON "rantevou" COMPUTED BY (cast("rantevou"."Ews" as date));
 CREATE INDEX RANTEVOU_IDX14 ON "rantevou" COMPUTED BY (cast("rantevou"."maxtime" as date));
 CREATE INDEX RANTEVOU_IDX15 ON "rantevou" COMPUTED BY (cast("rantevou"."mintime" as date));
 CREATE INDEX RANTEVOU_IDX16 ON "rantevou" COMPUTED BY (cast("rantevou"."Hmeromhnia" as date));
-
 
 alter table "rantevou" add "contact1" integer;
 alter table "rantevou" add "contact2" integer;
@@ -246,10 +240,14 @@ CREATE DESCENDING INDEX APOUHKH_IDX128 ON "apouhkh" ("custom48");
 CREATE DESCENDING INDEX APOUHKH_IDX129 ON "apouhkh" ("custom49"); 
 CREATE DESCENDING INDEX APOUHKH_IDX130 ON "apouhkh" ("custom50"); 
 
+-- 01/11/2023
+ ALTER TABLE "settings" ALTER COLUMN "key" TYPE VARCHAR(200); 
+ ALTER TABLE "dikaivmata" ALTER COLUMN "limit_docs" TYPE VARCHAR(100); 
+ ALTER TABLE "custom_buttons" ALTER COLUMN "link" TYPE VARCHAR(300); 
 
-
--- 21/06/2022
-
-
-
--- 29/10/2022
+-- 10/05/2024
+ALTER TABLE "diakanonismos" ADD "tameio" INTEGER;
+ALTER TABLE "pvlhseis" ADD "b2g" varchar(100);
+ALTER TABLE "fpa" ADD "order" INTEGER;
+ALTER TABLE "tropos" ADD "order" INTEGER;
+ALTER TABLE "skopos" ADD "order" INTEGER;
