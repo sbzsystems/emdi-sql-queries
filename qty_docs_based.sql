@@ -15,8 +15,7 @@ Usage:
 To use the function, you need to provide the product identifier and the document types that add to and subtract from the quantity.
 
 Example:
-
-SELECT qty_docs_based(123, '1,2,3', '4,5,6') FROM RDB$DATABASE;
+SELECT qty_docs_based("apouhkh"."Aa",'133,125','135') FROM from "apouhkh"
 
 This example calculates the quantity for the product with ID 123, adding quantities from document types 1, 2, 3 and subtracting quantities from document types 4, 5, 6.
 */
