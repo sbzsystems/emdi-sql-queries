@@ -1,3 +1,4 @@
+-- This script deletes all duplicate rows based on "Sxetika" and keeps only the latest
 -- Keep only the latest document per "Sxetika" from the last 3 months and delete the rest
 DELETE FROM "pvlhseis"
 WHERE "pvlhseis"."Aa" NOT IN (
