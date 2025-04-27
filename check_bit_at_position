@@ -1,3 +1,22 @@
+/*
+    Function: CHECK_BIT_AT_POSITION
+    Purpose: Checks if a specific bit at a given position in an integer value is set to 1 or 0.
+
+    Parameters:
+        - InputValue: INTEGER - The integer value to check.
+        - BitPos: INTEGER - The bit position to check (1-based index).
+
+    Returns:
+        - BOOLEAN:
+            - TRUE if the bit at the specified position is 1.
+            - FALSE if the bit at the specified position is 0.
+            - NULL if the input values are invalid or NULL.
+
+    Remarks:
+        - This function uses bitwise operations to determine the bit value efficiently.
+        - The BitPos parameter must be a valid positive integer within the range of the input value's bit length (1 to 32 for 32-bit integers).
+*/
+
 CREATE OR ALTER FUNCTION CHECK_BIT_AT_POSITION (
     InputValue INTEGER,      -- The integer value to check
     BitPos INTEGER           -- The bit position to check (1 = rightmost bit)
