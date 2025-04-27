@@ -1,0 +1,29 @@
+CREATE OR ALTER FUNCTION CHECK_BIT_AT_POSITION (
+    InputValue INTEGER,      -- The integer value to check
+    BitPos INTEGER           -- The bit position to check (1 = rightmost bit)
+)
+RETURNS BOOLEAN
+AS
+DECLARE VARIABLE BitIndex INTEGER;
+DECLARE VARIABLE BitValue INTEGER;
+BEGIN
+    -- Handle NULL input
+    IF (InputValue IS NULL) THEN
+        RETURN NULL;
+
+    -- Validate BitPos
+    IF (BitPos IS NULL OR BitPos <= 0 OR BitPos > 32) THEN
+        RETURN NULL;
+
+    -- Calculate the internal BitIndex (0-based from right)
+    BitIndex = BitPos - 1;
+
+    -- Shift and mask to get the bit
+    BitValue = BIN_AND(BIN_SHR(InputValue, BitIndex), 1);
+
+    -- Return TRUE if the bit is 1, otherwise FALSE
+    IF (BitValue = 1) THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+END
