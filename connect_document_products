@@ -1,0 +1,8 @@
+
+UPDATE "grammes"
+SET "Eidos" = COALESCE(
+  (SELECT FIRST 1 "apouhkh"."Aa" FROM "apouhkh" WHERE "apouhkh"."Kvdikos" = "grammes"."KvdikosEidoys"),
+  (SELECT FIRST 1 "apouhkh"."Aa" FROM "apouhkh" WHERE "apouhkh"."Perigrafh" = "grammes"."PerigrafhEidoys"),
+  null
+)
+WHERE "grammes"."Eidos" IS NULL
