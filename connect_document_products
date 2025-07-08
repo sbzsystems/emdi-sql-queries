@@ -1,3 +1,11 @@
+-- ==========================================================================
+-- Usage:
+-- This script updates the "Eidos" column in the "grammes" table for records
+-- where "Eidos" is NULL. It attempts to set "Eidos" based on matching values
+-- from the "apouhkh" table, using either "KvdikosEidoys" or "PerigrafhEidoys"
+-- as lookup keys. This helps connect product records with their corresponding
+-- document information.
+-- ==========================================================================
 
 UPDATE "grammes"
 SET "Eidos" = COALESCE(
