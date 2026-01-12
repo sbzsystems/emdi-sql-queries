@@ -2,13 +2,11 @@
 -- 6. MERGE DUPLICATES (by name AND country) - Execute Block
 -- ============================================================================
 -- This EXECUTE BLOCK will merge duplicates by name AND country:
---   1. Keeping the city with the lowest Aa (oldest)
---   2. Updating all references in pelates.Polh
---   3. Deleting duplicate city records
---
--- WARNING: Run this in a transaction! Test on a backup first!
--- UNCOMMENT THE BLOCK BELOW TO EXECUTE THE MERGE OPERATION
---
+--   1. Delete unused cities
+--   2. Keeping the city with the lowest Aa (oldest)
+--   3. Updating all references in pelates.Polh
+--   4. Deleting duplicate city records
+
  EXECUTE BLOCK
  AS
  DECLARE VARIABLE keep_id INTEGER;
@@ -16,12 +14,11 @@
  DECLARE VARIABLE city_name VARCHAR(1000);
  DECLARE VARIABLE country_code VARCHAR(4);
  BEGIN
-
+     -- Delete unused cities
      DELETE FROM "poleis"
      WHERE "poleis"."Aa" NOT IN (SELECT DISTINCT "pelates"."Polh" FROM "pelates" WHERE "pelates"."Polh" IS NOT NULL)
      and "poleis"."Aa">476 ;
-
-
+     -- Keeping the oldest Aa city with
      FOR SELECT
              MIN(p1."Aa") AS keep_id,
              p2."Aa" AS dup_id,
