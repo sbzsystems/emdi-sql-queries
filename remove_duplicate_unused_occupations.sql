@@ -13,7 +13,7 @@ BEGIN
         SELECT DISTINCT "pelates"."Epaggelma"
         FROM "pelates"
         WHERE "pelates"."Epaggelma" IS NOT NULL
-    );
+    ) AND "Aa">1355;
 
     -- 2. For each duplicated profession title
     FOR
