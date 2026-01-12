@@ -1,5 +1,5 @@
 -- ============================================================================
--- 6. REMOVE UNUSED AND MERGE DUPLICATES CITIES (by name AND country)
+-- REMOVE UNUSED AND MERGE DUPLICATES CITIES (by name AND country)
 -- ============================================================================
 EXECUTE BLOCK
 AS
