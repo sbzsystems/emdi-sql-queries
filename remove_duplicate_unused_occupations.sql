@@ -22,10 +22,10 @@ BEGIN
             e2."Aa" AS dup_id
         FROM "epaggelmata" e1
         JOIN "epaggelmata" e2
-          ON UPPER(TRIM(e1."Titlos")) = UPPER(TRIM(e2."Titlos"))
+          ON UPPER(TRIM(e1."Epaggelmata")) = UPPER(TRIM(e2."Epaggelmata"))
         WHERE e1."Aa" < e2."Aa"
-          AND e1."Titlos" IS NOT NULL
-          AND TRIM(e1."Titlos") <> ''
+          AND e1."Epaggelmata" IS NOT NULL
+          AND TRIM(e1."Epaggelmata") <> ''
         GROUP BY e2."Aa"
         INTO :keep_id, :dup_id
     DO
