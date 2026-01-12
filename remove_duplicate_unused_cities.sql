@@ -1,7 +1,6 @@
 -- ============================================================================
--- 6. MERGE DUPLICATES (by name AND country) - Execute Block
+-- 6. REMOVE UNUSED AND MERGE DUPLICATES CITIES (by name AND country)
 -- ============================================================================
--- This EXECUTE BLOCK will merge duplicates by name AND country:
 --   1. Delete unused cities
 --   2. Keeping the city with the lowest Aa (oldest)
 --   3. Updating all references in pelates.Polh
