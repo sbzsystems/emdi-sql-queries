@@ -14,10 +14,12 @@
  DECLARE VARIABLE city_name VARCHAR(1000);
  DECLARE VARIABLE country_code VARCHAR(4);
  BEGIN
+  
      -- Delete unused cities
      DELETE FROM "poleis"
      WHERE "poleis"."Aa" NOT IN (SELECT DISTINCT "pelates"."Polh" FROM "pelates" WHERE "pelates"."Polh" IS NOT NULL)
      and "poleis"."Aa">476 ;
+
      -- Keeping the oldest Aa city with
      FOR SELECT
              MIN(p1."Aa") AS keep_id,
@@ -34,6 +36,7 @@
          GROUP BY p2."Aa", p1."Onomasia", p1."country"
          INTO :keep_id, :dup_id, :city_name, :country_code
      DO BEGIN
+      
          -- Update all references in pelates table
          UPDATE "pelates"
          SET "Polh" = :keep_id
@@ -42,5 +45,6 @@
          -- Delete the duplicate city
          DELETE FROM "poleis"
          WHERE "Aa" = :dup_id;
+
      END
  END
